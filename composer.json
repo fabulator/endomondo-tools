@@ -10,6 +10,8 @@
 	"require": {
 		"PHP" : ">=5.4",
         "fabulator/endomondo-workouts": "1.x",
+		"fabulator/endomondo-api": "1.x",
+		"fabulator/endomondo-api-old": "1.x",
         "guzzlehttp/guzzle": "~6.0"
     },
 	"autoload": {

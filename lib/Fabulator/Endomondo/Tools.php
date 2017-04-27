@@ -11,9 +11,24 @@ use Fabulator\GoogleMaps\ElevationApi;
 class Tools {
 
     /**
-     * Tools constructor.
+     * @var EndomondoApi
      */
-    public function __construct() {}
+    private $endomondoApi;
+
+    /**
+     * @var EndomondoApiOld
+     */
+    private $endomondoApiOld;
+
+    /**
+     * Tools constructor.
+     * @param EndomondoApi $endomondoApi
+     * @param EndomondoApiOld $endomondoApiOld
+     */
+    public function __construct(EndomondoApi $endomondoApi, EndomondoApiOld $endomondoApiOld) {
+        $this->endomondoApi = $endomondoApi;
+        $this->endomondoApiOld = $endomondoApiOld;
+    }
 
     /**
      * Replace elevation data by Google maps elevation api.
@@ -97,6 +112,26 @@ class Tools {
 
         $workout->setAscent($ascent);
         $workout->setDescent($descent);
+
+        return $workout;
+    }
+
+    /**
+     * Delete old workout and create new.
+     *
+     * @param Workout $workout
+     * @return Workout
+     */
+    public function replaceWorkout(Workout $workout) {
+        $oldWorkoutId = $workout->getId();
+        $newId = $this->endomondoApiOld->createWorkout($workout)->getId();
+        $workout->setId($newId);
+        foreach ($workout->getHashtags() as $hashtag) {
+            $this->endomondoApi->addHastag($hashtag, $workout->getId());
+        }
+
+        $this->endomondoApi->editWorkout($workout);
+        $this->endomondoApi->deleteWorkout($oldWorkoutId);
 
         return $workout;
     }
