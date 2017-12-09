@@ -37,7 +37,7 @@ class Tools {
      * @param ElevationApi $elevationApi
      * @return Workout
      */
-    function rewriteElevationData(Workout $workout, ElevationApi $elevationApi)
+    public function rewriteElevationData(Workout $workout, ElevationApi $elevationApi)
     {
         $workout = clone $workout;
 
@@ -82,7 +82,7 @@ class Tools {
      * @param Workout $workout
      * @return Workout
      */
-    function recalculateAscentDescent(Workout $workout)
+    public static function recalculateAscentDescent(Workout $workout)
     {
         $workout = clone $workout;
 
